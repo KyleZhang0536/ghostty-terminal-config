@@ -56,7 +56,7 @@ source <(fzf --zsh)
 #   zi foo       交互模式（配合 fzf 选择）
 # 数据文件: ~/.local/share/zoxide/db.zo（自动衰减，无需清理）
 # 注意: 不要设置 alias cd="z"，会导致 zoxide 无法正确记录访问
-eval "$(zoxide init zsh)"
+eval "$(zoxide init zsh --cmd cd)"
 
 # ==============================================================================
 # Yazi | 终端文件管理器
@@ -96,6 +96,17 @@ source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # Ctrl+F 接受 autosuggestions 的建议（默认是 → 键，Ctrl+F 更顺手）
 bindkey '^F' autosuggest-accept
 
+# 上/下方向键：按"当前已输入的内容"前缀搜索历史（不是逐条翻全部历史）
+# 效果: 输入 git 后按 ↑，只在历史里的 git* 命令之间切换；按 ↓ 往回走，
+#       翻过最新一条后会自动恢复你原本输入的内容
+# 说明: 这个功能原本由 oh-my-zsh 的 lib/key-bindings.zsh 自动绑定，
+#       本机改用 brew 版插件 + 移除 oh-my-zsh 后丢失，故在此手动加回
+autoload -U up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey '^[[A' up-line-or-beginning-search
+bindkey '^[[B' down-line-or-beginning-search
+
 # ==============================================================================
 # 别名
 # ==============================================================================
@@ -109,3 +120,23 @@ alias lt="eza --tree --icons --level=2"
 # 使用方法: cat 文件名（实际调用 bat）
 # 注意: --paging=never 禁用分页，--style=plain 去掉行号等装饰，只保留语法高亮
 alias cat="bat --paging=never --style=plain"
+
+proxy () {
+  export http_proxy="http://127.0.0.1:7890"
+  export https_proxy="http://127.0.0.1:7890"
+  export all_proxy="socks5://127.0.0.1:7890"
+  echo "Clash Proxy:ON"
+}
+
+noproxy () {
+  unset http_proxy
+  unset https_proxy
+  unset all_proxy
+  echo "Clash Proxy:OFF"
+}
+
+# ---- Eza (better ls) -----
+# alias ls="eza --color=always --long --no-filesize --icons=always --no-time --no-user --no-permissions"
+
+# ---- Zoxide (better cd) ----
+# eval "$(zoxide init zsh --cmd cd)"
