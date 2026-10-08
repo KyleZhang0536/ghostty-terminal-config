@@ -107,9 +107,11 @@ rm -rf /tmp/ghostty-config
 
 ## Starship 预设说明
 
-彩虹条基于 `starship preset catppuccin-powerline` 官方预设，唯一改动：
+~~彩虹条基于 `starship preset catppuccin-powerline` 官方预设，唯一改动：~~
 
-- `[line_break] disabled = false`：彩虹条一行，输入符号在下一行
+~~- `[line_break] disabled = false`：彩虹条一行，输入符号在下一行~~
+
+`starship preset nerd-font-symbols --force  -o ~/.config/starship.toml`
 
 ## 快捷键速查
 
